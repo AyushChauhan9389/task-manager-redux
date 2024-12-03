@@ -1,4 +1,3 @@
-// src/components/Navbar.jsx
 import React from 'react';
 import { Bell, Cog, Moon, Search, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
