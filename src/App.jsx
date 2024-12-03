@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <div>
-      Ui
-    </div>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
+  );
+};
 
-export default App
+export default App;
