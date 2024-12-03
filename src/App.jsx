@@ -1,8 +1,8 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import NotFound from './pages/NotFound';
+import Dashboard from '@/pages/Dashboard';
+import TaskDetails from '@/pages/TaskDetails';
+import NotFound from '@/pages/NotFound';
 
 const App = () => {
   return (
@@ -10,6 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/tasks/:id" element={<TaskDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
