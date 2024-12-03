@@ -1,9 +1,10 @@
 import React from 'react';
 import { Bell, Cog, Moon, Search, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AddEditTaskModal from '@/components/AddEditTaskModal';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/bu';
 
 const Navbar = () => {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -37,6 +38,10 @@ const Navbar = () => {
           </Button>
         </div>
       </header>
+      <AddEditTaskModal
+        open={isTaskModalOpen}
+        handleClose={() => setIsTaskModalOpen(false)}
+      />
     </>
   );
 };
