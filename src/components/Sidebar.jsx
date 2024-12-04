@@ -1,47 +1,81 @@
-// src/components/Sidebar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 import {
-  Layout,
-  Bell,
-  Cog,
-  Mail,
+  LayoutDashboard,
+  BarChart2,
+  Users,
   ShoppingCart,
-  Clock,
-  Moon,
-  Search,
+  Truck,
+  GraduationCap,
+  Layout,
+  FileText,
+  Mail,
+  MessageSquare,
+  Calendar,
+  KanbanSquare,
 } from 'lucide-react';
 
-const Sidebar = () => {
-  const menuItems = ['Analytics', 'CRM', 'eCommerce', 'Logistics', 'Academy'];
-
+export const Sidebar = () => {
   return (
-    <div className="fixed inset-y-0 left-0 w-64 bg-gray-800 p-4">
-      <div className="flex items-center gap-2 mb-8">
-        <div className="h-8 w-8 rounded bg-purple-500" />
-        <span className="text-xl font-bold text-white">TaskManager</span>
+    <div className="w-64 bg-[#242b4a] text-gray-300 p-4">
+      <div className="flex items-center space-x-2 mb-8">
+        <div className="w-8 h-8 bg-purple-500 rounded-lg"></div>
+        <span className="text-xl font-semibold">Vuexy</span>
       </div>
-      <nav className="space-y-2">
-        <Link
-          to="/dashboard"
-          className="flex items-center gap-3 rounded-lg bg-purple-500/10 px-3 py-2 text-purple-500"
-        >
-          <Layout className="h-4 w-4" />
-          <span>Dashboards</span>
-        </Link>
-        {menuItems.map((item) => (
-          <Link
-            key={item}
-            to="/dashboard"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-purple-500/10 hover:text-purple-500"
-          >
-            <Layout className="h-4 w-4" />
-            <span>{item}</span>
-          </Link>
-        ))}
-      </nav>
+
+      <div className="space-y-6">
+        <div>
+          <div className="flex items-center space-x-2 mb-4">
+            <LayoutDashboard size={20} />
+            <span className="font-medium">Dashboards</span>
+            <span className="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+              5
+            </span>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2 p-2 bg-purple-500 bg-opacity-20 rounded-lg text-purple-500">
+            <BarChart2 size={20} />
+            <span>Analytics</span>
+          </div>
+
+          {[
+            { icon: <Users size={20} />, label: 'CRM' },
+            { icon: <ShoppingCart size={20} />, label: 'eCommerce' },
+            { icon: <Truck size={20} />, label: 'Logistics' },
+            { icon: <GraduationCap size={20} />, label: 'Academy' },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center space-x-2 p-2 hover:bg-[#1a1f37] rounded-lg cursor-pointer"
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <div className="text-xs uppercase text-gray-500 mb-2">APPS & PAGES</div>
+          {[
+            { icon: <Mail size={20} />, label: 'Email' },
+            { icon: <MessageSquare size={20} />, label: 'Chat' },
+            { icon: <Calendar size={20} />, label: 'Calendar' },
+            { icon: <KanbanSquare size={20} />, label: 'Kanban' },
+            { icon: <ShoppingCart size={20} />, label: 'eCommerce' },
+            { icon: <GraduationCap size={20} />, label: 'Academy' },
+            { icon: <Truck size={20} />, label: 'Logistics' },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center space-x-2 p-2 hover:bg-[#1a1f37] rounded-lg cursor-pointer"
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
-
-export default Sidebar;

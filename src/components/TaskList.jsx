@@ -1,78 +1,49 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import TaskCard from '@/components/TaskCard';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { reorderTasks } from '@/redux/tasksSlice';
+import { useSelector } from 'react-redux';
+import { TaskItem } from './TaskItem';
+import { isAfter, parseISO } from 'date-fns';
 
-const TaskList = () => {
-  const dispatch = useDispatch();
-  const { tasks, filter, searchQuery } = useSelector((state) => state.tasks);
+export const TaskList = () => {
+  const { tasks, filter, searchQuery } = useSelector(
+    (state) => state.tasks
+  );
 
-  const filteredTasks = tasks.filter((task) => {
-    // Filter by search query
-    if (searchQuery && !task.title.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
+  const filterTasks = (tasks, filter) => {
+    const filteredTasks = tasks.filter((task) => {
+      const matchesSearch = task.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
 
-    // Filter by status
-    switch (filter) {
-      case 'COMPLETED':
-        return task.completed;
-      case 'PENDING':
-        return !task.completed;
-      case 'OVERDUE':
-        return new Date(task.dueDate) < new Date() && !task.completed;
-      default:
-        return true;
-    }
-  });
+      switch (filter) {
+        case 'completed':
+          return task.completed && matchesSearch;
+        case 'pending':
+          return !task.completed && matchesSearch;
+        case 'overdue':
+          return (
+            !task.completed &&
+            isAfter(new Date(), parseISO(task.dueDate)) &&
+            matchesSearch
+          );
+        default:
+          return matchesSearch;
+      }
+    });
 
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-
-    if (!destination) return;
-    if (source.index === destination.index) return;
-
-    dispatch(
-      reorderTasks({
-        sourceIndex: source.index,
-        destinationIndex: destination.index,
-      })
-    );
+    return filteredTasks;
   };
 
-  if (filteredTasks.length === 0) {
-    return <p className="text-center text-gray-400">No tasks found.</p>;
-  }
+  const filteredTasks = filterTasks(tasks, filter);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="tasks">
-        {(provided) => (
-          <div
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {filteredTasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id} index={index}>
-                {(provided) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                  >
-                    <TaskCard task={task} />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className="space-y-4">
+      {filteredTasks.length === 0 ? (
+        <div className="text-center text-gray-500 py-8">
+          No tasks found. Add a new task to get started!
+        </div>
+      ) : (
+        filteredTasks.map((task) => <TaskItem key={task.id} task={task} />)
+      )}
+    </div>
   );
 };
-
-export default TaskList;

@@ -1,64 +1,49 @@
-// src/components/TaskFilters.jsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter, setSearchQuery } from '@/redux/tasksSlice';
-import { Input } from '@/components/ui/Input';
+import { setFilter, setSearchQuery } from '../store/taskSlice';
 import { Search } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
 
-const TaskFilters = () => {
+export const TaskFilters = () => {
   const dispatch = useDispatch();
-  const currentFilter = useSelector((state) => state.tasks.filter);
-  const searchQuery = useSelector((state) => state.tasks.searchQuery);
+  const { filter, searchQuery } = useSelector((state) => state.tasks);
 
-  const handleFilterChange = (filter) => {
-    dispatch(setFilter(filter));
-  };
-
-  const handleSearchChange = (e) => {
-    dispatch(setSearchQuery(e.target.value));
-  };
+  const filters = [
+    { value: 'all', label: 'All Tasks' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'overdue', label: 'Overdue' },
+  ];
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-      <div className="relative w-full sm:w-1/3 mb-2 sm:mb-0">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-        <Input
+    <div className="space-y-4">
+      <div className="relative">
+        <Search
+          size={20}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        />
+        <input
           type="text"
-          placeholder="Search Tasks"
+          placeholder="Search tasks..."
           value={searchQuery}
-          onChange={handleSearchChange}
-          className="pl-10 bg-gray-800 text-white placeholder:text-gray-400"
+          onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+          className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </div>
-      <div className="flex space-x-2">
-        <Button
-          variant={currentFilter === 'ALL' ? 'primary' : 'ghost'}
-          onClick={() => handleFilterChange('ALL')}
-        >
-          All
-        </Button>
-        <Button
-          variant={currentFilter === 'COMPLETED' ? 'primary' : 'ghost'}
-          onClick={() => handleFilterChange('COMPLETED')}
-        >
-          Completed
-        </Button>
-        <Button
-          variant={currentFilter === 'PENDING' ? 'primary' : 'ghost'}
-          onClick={() => handleFilterChange('PENDING')}
-        >
-          Pending
-        </Button>
-        <Button
-          variant={currentFilter === 'OVERDUE' ? 'primary' : 'ghost'}
-          onClick={() => handleFilterChange('OVERDUE')}
-        >
-          Overdue
-        </Button>
+      <div className="flex flex-wrap gap-2">
+        {filters.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => dispatch(setFilter(f.value))}
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              filter === f.value
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
       </div>
     </div>
   );
 };
-
-export default TaskFilters;
