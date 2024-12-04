@@ -100,7 +100,7 @@ src/
 
 ## 🌟 Live Demo
 
-Check out the live demo of the application: [Task Manager Demo](https://task-manager-redux-demo.netlify.app)
+Check out the live demo of the application: [Task Manager Demo]()
 
 ## 💻 Local Development
 
