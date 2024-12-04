@@ -19,7 +19,7 @@ export const TaskItem = ({ task }) => {
 
   return (
     <div
-      className={`p-4 rounded-lg shadow-sm border ${
+      className={`mt-4 p-4 rounded-lg shadow-sm border ${
         task.completed
           ? 'bg-gray-50 border-gray-200'
           : isOverdue
